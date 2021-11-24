@@ -30,14 +30,14 @@ module Divisor_Frec(
 	parameter frecuencia = 4000000; //Frecuencia del Clock integrado en el CPLD (4 MHz)
 	parameter frec_out = 1; //Frecuencia de salida, que debe ser de 1 Hz
 	parameter cont_max = frecuencia / (2*frec_out);
-	parameter cant_segundos = 4'b1001;                 
+	parameter cant_segundos = 6'b111011;                 
 	
-	reg [27:0] cont;
-	reg [3:0] aux;
+	reg [21:0] cont;
+	reg [5:0] aux;
 		
 	initial begin
-		cont  = 28'b0;
-		aux  = 4'b0;
+		cont  = 22'b0;
+		aux  = 6'b0;
 		clk_out = 0;
 		reset = 0;
 	end
@@ -45,7 +45,7 @@ module Divisor_Frec(
 	always @ (posedge clk_in) begin
 		if(cont == (cont_max))begin
 			clk_out <= ~clk_out;  //Cambia el estado del contador de salida y resetea el contador
-			cont <= 28'b0;
+			cont <= 22'b0;
 		end
 		else begin
 			cont <= cont+1;
@@ -57,14 +57,14 @@ module Divisor_Frec(
 			if(P1==0) begin					//Por lo tanto el reset se pone en 1 si durante 10 segundos no se presiona ningun pulsador
 				if(P2==0) begin
 					if(P3==0) begin
-						aux <= (aux+ 4'b0001);
+						aux <= (aux+ 6'b000001);
 						reset <= 0;
 					end
 				end
 			end
 		end	
 		else begin
-			aux <= 4'b0000;
+			aux <= 6'b000000;
 			reset <= 1;
 		end
 	end
